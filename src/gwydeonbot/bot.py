@@ -10,10 +10,7 @@ from .clients.blizzard_api import BlizzardApiClient
 from .clients.raiderio_api import RaiderIoClient
 from .services.character_service import CharacterService
 from .services.realm_service import RealmService
-from .services.guild_service import GuildService
-from .services.ilvl_service import IlvlService
 from .cogs.wow import WowCog
-from .cogs.guild import GuildCog
 
 
 class GwydeonBot(commands.Bot):
@@ -24,7 +21,6 @@ class GwydeonBot(commands.Bot):
         self.http_session: aiohttp.ClientSession | None = None
         self.character_service: CharacterService | None = None
         self.realm_service: RealmService | None = None
-        self.guild_service: GuildService | None = None
 
     async def setup_hook(self):
         self.http_session = aiohttp.ClientSession()
@@ -44,12 +40,8 @@ class GwydeonBot(commands.Bot):
 
         self.character_service = CharacterService(blizzard, raider)
         self.realm_service = RealmService(blizzard)
-        self.guild_service = GuildService(blizzard)
-        self.ilvl_service = IlvlService(blizzard)
-
 
         await self.add_cog(WowCog(self, self.character_service, self.realm_service))
-        await self.add_cog(GuildCog(self, self.guild_service, self.ilvl_service))
 
         # Sync rápido en tu servidor (dev)
         if self.settings.discord_guild_id:

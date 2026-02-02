@@ -81,41 +81,11 @@ class BlizzardApiClient:
         )
 
     # -----------------------------
-    # Guild APIs (Profile namespace)
-    # -----------------------------
-    async def guild_roster(self, realm_slug: str, guild_slug: str) -> dict[str, Any]:
-        """
-        Devuelve el roster (miembros) de una hermandad.
-
-        Endpoint:
-          GET /data/wow/guild/{realmSlug}/{guildSlug}/roster
-        Namespace:
-          profile-<region>
-        """
-        return await self._get(
-            f"/data/wow/guild/{realm_slug}/{guild_slug}/roster",
-            {"namespace": self._ns_profile(), "locale": self.locale},
-        )
-
-    # -----------------------------
     # Game Data APIs (Achievement)
     # -----------------------------
     async def achievement_by_id(self, achievement_id: int) -> dict[str, Any]:
         return await self._get(
             f"/data/wow/achievement/{achievement_id}",
-            {"namespace": self._ns_static(), "locale": self.locale},
-        )
-
-    # -----------------------------
-    # Game Data APIs (Playable Class)
-    # -----------------------------
-    async def playable_class_by_id(self, class_id: int) -> dict[str, Any]:
-        """
-        GET /data/wow/playable-class/{classId}
-        Namespace: static-<region>
-        """
-        return await self._get(
-            f"/data/wow/playable-class/{class_id}",
             {"namespace": self._ns_static(), "locale": self.locale},
         )
 
@@ -146,16 +116,8 @@ class BlizzardApiClient:
         )
 
     # -----------------------------
-    # Armory URLs
+    # Armory URL
     # -----------------------------
     def armory_character_url(self, realm_slug: str, character_name: str) -> str:
         locale_web = self.locale.replace("_", "-").lower()
         return f"https://worldofwarcraft.blizzard.com/{locale_web}/character/{self.region}/{realm_slug}/{character_name}"
-
-    def armory_guild_url(self, realm_slug: str, guild_slug: str) -> str:
-        """
-        URL pública de Armory para la guild (web).
-        Nota: la web puede variar por locale, pero esta estructura funciona bien para EU/US.
-        """
-        locale_web = self.locale.replace("_", "-").lower()
-        return f"https://worldofwarcraft.blizzard.com/{locale_web}/guild/{self.region}/{realm_slug}/{guild_slug}"

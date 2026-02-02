@@ -18,11 +18,6 @@ Bot de Discord en Python (`discord.py`) que consulta la API de Blizzard (World o
    - (recomendado) `pip install -e .`  # instala el paquete desde `src/`
 3. Arranca el bot:
    - `python -m gwydeonbot`
-   - En caso de error usar
-   ```bash
-   Set-Alias gwydeonbot ".\.venv\Scripts\python.exe"
-   gwydeonbot -m gwydeonbot.main
-   ```
 
 > Nota: si trabajas con un `venv`, usa `.venv/` y asegúrate de que esté en `.gitignore`.
 
