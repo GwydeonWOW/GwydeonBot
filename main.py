@@ -6,12 +6,14 @@ from .config import get_settings
 from .services.blizzard_oauth import BlizzardOAuthClient
 from .services.wow_api import WowApi
 from .cogs.wow import WowCog
+from .cogs.guild import GuildCog
 
 class GwydeonBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix="!", intents=discord.Intents.default())
         self.http_session: aiohttp.ClientSession | None = None
         self.wow_api: WowApi | None = None
+        self.ilvl_service: IlvlService | None = None
         self.settings = get_settings()
 
     async def setup_hook(self):
@@ -29,6 +31,7 @@ class GwydeonBot(commands.Bot):
         )
 
         await self.add_cog(WowCog(self))
+        await self.add_cog(GuildCog(self))
 
         # Sync rápido en tu servidor (dev)
         if self.settings.discord_guild_id:
